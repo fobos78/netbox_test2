@@ -10,14 +10,28 @@ function Table() {
   const [index, setIndex] = useState(0);// индекс элемента массива
   const [inputEl, setInputEl] = useState([false, false, false, false, false]);// доступ к редактированию елемента
   const [changeName, setChangeName] = useState('');// для редактирования имени
+  const [changeAge, setChangeAge] = useState(0);// для редактирования возраста
+  const [changePhone, setChangePhone] = useState('');// для редактирования телефона
+  const [changeEmail, setChangeEmail] = useState('');// для редактирования email
+
+  const [word, setWord] = useState(''); // вводим в инпут TEST
+
   function heandleSave(id) {
     setChengeUpdete(id);
     setInputEl([false, false, false, false, false]);
-    // setChangeName(changeName);
   }
   // редактирование имени
   function changeChoiceName(event) {
     setChangeName(event.target.value);
+  }
+  function changeChoiceAge(event) {
+    setChangeAge(event.target.value);
+  }
+  function changeChoicePhone(event) {
+    setChangePhone(event.target.value);
+  }
+  function changeChoiceEmail(event) {
+    setChangeEmail(event.target.value);
   }
   function chahgeInputEl(i) {
     const newData = inputEl.map((el) => el);
@@ -25,6 +39,9 @@ function Table() {
     setInputEl(newData);
     setIndex(i);
     setChangeName(data[i][1].value);
+    setChangeAge(data[i][2].value);
+    setChangePhone(data[i][3].value);
+    setChangeEmail(data[i][4].value);
   }
   // удаление элемента
   useEffect(() => {
@@ -72,6 +89,9 @@ function Table() {
       // setData(() => result);
       const newEl = data.find((el) => el[0].value === idUpdete);
       newEl[1].value = changeName;
+      newEl[2].value = changeAge;
+      newEl[3].value = changePhone;
+      newEl[4].value = changeEmail;
       // const newData = data.filter((el) => el[0].value !== idUpdete);
       const newData = data.map((el) => el);
       newData.splice(index, 1, newEl);
@@ -83,6 +103,9 @@ function Table() {
       somePut();
       setIdUpdete(false);
       setChangeName('');
+      setChangeAge('');
+      setChangePhone('');
+      setChangeEmail('');
     }
   }, [chengeUpdete]);
   // начальная загрузка
@@ -95,11 +118,15 @@ function Table() {
         console.log('startErr', err);
       }
       const result = await respons.json();
+      console.log('result', result);
       setData(() => result);
     }
     someData();
   }, []);
-  console.log('inputEl----', inputEl);
+  // TEST
+  function inputChange(event) {
+    setWord(event.target.value);
+  }
   return (
     <>
       <div className="Table">
@@ -117,11 +144,11 @@ function Table() {
             {!inputEl[i] && <h5 className="el1">{el[1].value}</h5>}
             {inputEl[i] && <input className="el2" onChange={changeChoiceName} value={changeName} />}
             {!inputEl[i] && <h5 className="el1">{el[2].value}</h5>}
-            {inputEl[i] && <input type="text" className="el2" value={el[2].value} />}
+            {inputEl[i] && <input className="el2" onChange={changeChoiceAge} value={changeAge} />}
             {!inputEl[i] && <h5 className="el1">{el[3].value}</h5>}
-            {inputEl[i] && <input type="text" className="el2" value={el[3].value} />}
+            {inputEl[i] && <input className="el2" onChange={changeChoicePhone} value={changePhone} />}
             {!inputEl[i] && <h5 className="el1">{el[4].value}</h5>}
-            {inputEl[i] && <input type="text" className="el2" value={el[4].value} />}
+            {inputEl[i] && <input className="el2" onChange={changeChoiceEmail} value={changeEmail} />}
             <div className="el1">
               <button onClick={() => setIdDel(el[0].value)}>Del</button>
               {!inputEl[i] && <button onClick={() => { setIdUpdete(el[0].value); chahgeInputEl(i); }}>Update</button>}
@@ -134,6 +161,12 @@ function Table() {
           {' '}
           {data.length}
         </h3>
+        <div>
+          TEST:
+          <input onChange={inputChange} value={word} />
+          {/* <button type="button" onClick={clickPush}>Push</button> */}
+          <h3>{word}</h3>
+        </div>
       </div>
     </>
   );

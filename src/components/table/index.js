@@ -18,7 +18,10 @@ function Table() {
 
   function heandleSave(id) {
     setChengeUpdete(id);
-    setInputEl([false, false, false, false, false]);
+    const newData = inputEl.map((el) => el);
+    newData.splice(index, 1, !inputEl[index]);
+    setInputEl(newData);
+    setIndex(0);
   }
   // редактирование имени
   function changeChoiceName(event) {
@@ -123,19 +126,38 @@ function Table() {
     }
     someData();
   }, []);
+  // useEffect(() => {
+
+  // }, [data]);
   // TEST
   function inputChange(event) {
     setWord(event.target.value);
+  }
+  // сортировка элементов
+  function sortEl(i) {
+    const str = JSON.stringify(data);
+    const arr = JSON.parse(str);
+    const newData = arr.sort((a, b) => {
+      if (a[i].value > b[i].value) {
+        return 1;
+      }
+      if (a[i].value < b[i].value) {
+        return -1;
+      }
+      return 0;
+    });
+    setData(() => newData);
+    console.log('Data', data);
   }
   return (
     <>
       <div className="Table">
         <div className="head">
-          <h2 className="el">id</h2>
-          <h2 className="el">name</h2>
-          <h2 className="el">age</h2>
-          <h2 className="el">phone</h2>
-          <h2 className="el">email</h2>
+          <h2 className="el">id<p onClick={() => { sortEl(0) }}>&#9660;</p></h2>
+          <h2 className="el">name<p onClick={() => { sortEl(1) }}>&#9660;</p></h2>
+          <h2 className="el">age<p onClick={() => { sortEl(2) }}>&#9660;</p></h2>
+          <h2 className="el">phone<p onClick={() => { sortEl(3) }}>&#9660;</p></h2>
+          <h2 className="el">email<p onClick={() => { sortEl(4) }}>&#9660;</p></h2>
           <h2 className="el">act</h2>
         </div>
         {data.map((el, i) => (

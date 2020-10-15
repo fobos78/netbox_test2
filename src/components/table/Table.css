@@ -52,3 +52,15 @@
   align-items: center;
   overflow: hidden;
 }
+.mod{
+  width: 70%;
+  height: 500px;
+  border: 1px solid black;
+  border-radius: 5px;
+  background-color: darkcyan;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  position: fixed;
+}
